@@ -1,0 +1,7 @@
+ext.versions = [:]
+
+versions.retrofit = "2.9.0"
+versions.lifecycle_ktx = "2.3.1"
+versions.converter_gson_version = "2.9.0"
+
+

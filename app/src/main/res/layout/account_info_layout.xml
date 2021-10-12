@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chendroid.learn.widget.DragConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple_500">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/account_user_avatar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="38dp"
+        app:actualImageResource="@drawable/account_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:roundAsCircle="true" />
+
+    <TextView
+        android:id="@+id/account_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account_user_avatar"
+        tools:text="chendroid" />
+
+    <com.chendroid.learn.widget.TagView
+        android:id="@+id/account_collect"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/account_user_name"
+        app:tagBackground="@drawable/tag_default_bg_8"
+        app:tagText="我的收藏"
+        app:tagTextColor="@color/GBL01A" />
+
+    <com.chendroid.learn.widget.TagView
+        android:id="@+id/account_todo"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/account_collect"
+        app:tagBackground="@drawable/tag_default_bg_8"
+        app:tagText="我的 todo"
+        app:tagTextColor="@color/GBL01A" />
+
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/tag_default_bg_8"
+        android:text="退出账号"
+        android:textColor="@color/blue"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <include
+        layout="@layout/login_in_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</com.chendroid.learn.widget.DragConstraintLayout>

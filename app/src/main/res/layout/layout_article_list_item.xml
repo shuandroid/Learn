@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_item_selector"
+    android:padding="10dp"
+    android:stateListAnimator="@animator/item_lift_on_touch">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/home_item_head"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="8dp"
+        app:actualImageResource="@mipmap/ic_launcher"
+        app:roundAsCircle="true" />
+
+    <TextView
+        android:id="@+id/home_item_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/home_item_head"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/home_item_like"
+        android:layout_toEndOf="@id/home_item_head"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/secondary_text_light"
+        tools:text="作者" />
+
+    <TextView
+        android:id="@+id/home_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/home_item_head"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center_vertical"
+        android:paddingEnd="10dp"
+        android:textColor="@android:color/secondary_text_light"
+        tools:ignore="RtlSymmetry"
+        tools:text="日期" />
+
+    <TextView
+        android:id="@+id/article_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/home_item_head"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center_vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="4dp"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="19sp"
+        tools:text="标题" />
+
+    <com.chendroid.learn.widget.TagView
+        android:id="@+id/home_item_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/home_item_like"
+        android:layout_alignBottom="@id/home_item_like"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:minHeight="30dp"
+        app:tagBackground="@drawable/tag_selected_bg"
+        app:tagCount="0"
+        app:tagStatus="status_default"
+        app:tagText="测试 tag"
+        app:tagTextColor="@color/GBL01A"
+        app:tagTextSize="14sp" />
+
+    <ImageView
+        android:id="@+id/home_item_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/article_title"
+        android:layout_alignParentEnd="true"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        app:srcCompat="@drawable/ic_action_no_like"
+        tools:ignore="ContentDescription" />
+</RelativeLayout>
