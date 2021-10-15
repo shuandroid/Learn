@@ -28,11 +28,13 @@ interface NewWanService {
      */
     @POST("/user/login")
     @FormUrlEncoded
-    suspend fun loginAccount(@Field("username") username: String,
-                             @Field("password") password: String): Response<LoginResponse>
+    suspend fun loginAccount(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): Response<LoginResponse>
 
     @GET("/user/logout/json")
-    suspend fun logoutAccount() :Response<LogoutResponse>
+    suspend fun logoutAccount(): Response<LogoutResponse>
 
     /**
      * 收藏或者取消收藏文章
@@ -43,9 +45,18 @@ interface NewWanService {
     /**
      * 取消收藏文章
      */
+    @POST("/lg/uncollect_originId/{article_id}/json")
+    suspend fun unCollectArticleInArticleList(@Path("article_id") articleId: String): Response<CollectArticleResponse>
+
+    /**
+     * 取消收藏文章
+     */
     @POST("/lg/uncollect/{article_id}/json")
     @FormUrlEncoded
-    suspend fun unCollectArticle(@Path("article_id") articleId: String, @Field("originId") originId: Int = -1): Response<CollectArticleResponse>
+    suspend fun unCollectArticle(
+        @Path("article_id") articleId: String,
+        @Field("originId") originId: Int = -1
+    ): Response<CollectArticleResponse>
 
     /**
      * 后去 Todo 列表
@@ -58,13 +69,18 @@ interface NewWanService {
      * 例如：「/lg/todo/v2/list/{1}/json?status=0&orderby=1&type=」
      */
     @GET("/lg/todo/v2/list/{page_num}/json")
-    suspend fun getTodoList(@Path("page_num") @IntRange(from = 1) pageNum: Int, @QueryMap queryMap: Map<String, Int>? = null): Response<TodoData>
+    suspend fun getTodoList(
+        @Path("page_num") @IntRange(from = 1) pageNum: Int,
+        @QueryMap queryMap: Map<String, Int>? = null
+    ): Response<TodoData>
 
 
     @POST("/lg/todo/add/json")
     @FormUrlEncoded
-    suspend fun addNewTodo(@Field("title") title: String, @Field("content") content: String,
-                           @Field("type") type: Int): Response<TodoResponseData>
+    suspend fun addNewTodo(
+        @Field("title") title: String, @Field("content") content: String,
+        @Field("type") type: Int
+    ): Response<TodoResponseData>
 
     @GET("/tree/json")
     suspend fun getArticleTypeList(): Response<TagListResponse>

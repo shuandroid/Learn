@@ -6,10 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chendroid.learn.bean.ArticleInfoData
 import com.chendroid.learn.core.BaseFragment
 import com.chendroid.learn.databinding.FragmentArticleListLayoutBinding
+import com.chendroid.learn.ui.activity.ArticleDetailActivity
+import com.chendroid.learn.ui.event.ArticleCollectInfoEvent
 import com.chendroid.learn.ui.holder.ArticleItemViewDelegate
 import com.chendroid.learn.ui.vm.ArticleListViewModel
+import com.chendroid.learn.ui.vm.CollectArticleViewModel
 import com.chendroid.learn.util.DebugLog
 import com.chendroid.learn.widget.CustomItemDecoration
 import com.drakeet.multitype.MultiTypeAdapter
@@ -19,7 +23,7 @@ import com.drakeet.multitype.MultiTypeAdapter
  * @date        : 2021/8/26
  * @description : 文章列表界面 fragment
  */
-class ArticleListFragment : BaseFragment() {
+class ArticleListFragment : BaseFragment(), ArticleItemViewDelegate.ArticleItemClickListener {
 
     companion object {
         /**
@@ -51,18 +55,25 @@ class ArticleListFragment : BaseFragment() {
     private val multiTypeAdapter = MultiTypeAdapter()
 
     // 真正用来存在文章列表需要的数据
-    private val articleList: MutableList<Any> = mutableListOf()
+    private val articleList: MutableList<ArticleInfoData> = mutableListOf()
 
     private val articleListViewModel: ArticleListViewModel by lazy {
         getActivityScopeViewModel(ArticleListViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        multiTypeAdapter.register(ArticleItemViewDelegate())
-        multiTypeAdapter.items = articleList
+    // 收藏文章的 viewModel， 在 application 范围内生效
+    private val collectArticleViewModel: CollectArticleViewModel by lazy {
+        getApplicationScopeViewModel(CollectArticleViewModel::class.java)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        multiTypeAdapter.register(ArticleItemViewDelegate().apply {
+            // 设置监听回调
+            clickListener = this@ArticleListFragment
+        })
+        multiTypeAdapter.items = articleList
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -96,7 +107,7 @@ class ArticleListFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         binding.homeRecyclerView.apply {
-            DebugLog.d(msg = "homeRecyclerViewv 的 overScrollMode  is $overScrollMode")
+            DebugLog.d(msg = "homeRecyclerView 的 overScrollMode  is $overScrollMode")
             overScrollMode
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             adapter = multiTypeAdapter
@@ -108,21 +119,22 @@ class ArticleListFragment : BaseFragment() {
         binding.homeRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                DebugLog.d("zc_test", "文章列表滚动了")
                 this@ArticleListFragment.onScrolled(recyclerView, dx, dy)
             }
         })
-
     }
 
     private fun bindViewModel() {
-
         articleListViewModel.articleListLiveData.observe(viewLifecycleOwner, {
             DebugLog.d(msg = "监听得到 数据")
             articleList.addAll(it!!)
             multiTypeAdapter.notifyDataSetChanged()
             binding.homeSwipeRefresh.isRefreshing = false
+        })
 
+        collectArticleViewModel.articleCollectChanged.observe(viewLifecycleOwner, {
+            DebugLog.d("zc_test", "收到文章状态发生变化， articleId is ${it.articleId}")
+            updateArticleStatusByLV(it)
         })
     }
 
@@ -176,12 +188,64 @@ class ArticleListFragment : BaseFragment() {
         return !articleListViewModel.isLoadingArticle
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         // 要不要销毁
         _binding = null
     }
 
+    override fun onRootClicked(data: ArticleInfoData) {
+        DebugLog.d("zc_test", "onRootClicked() data is $data")
+        if (context == null) {
+            return
+        }
+        startActivity(
+            ArticleDetailActivity.args(
+                requireContext(),
+                data.id,
+                data.title,
+                data.link,
+                data.collect
+            )
+        )
+    }
+
+    override fun onLikeArticleClicked(
+        data: ArticleInfoData,
+        handleResult: (isNetSuccess: Boolean) -> Unit
+    ) {
+        DebugLog.d("zc_test", "onLikeArticleClicked() data is $data")
+        if (data.collect) {
+            collectArticleViewModel.unCollectArticleInList(data.id, handleResult)
+        } else {
+            collectArticleViewModel.collectArticle(data.id, handleResult)
+        }
+    }
+
+    /**
+     * 根据 liveData 的监听，改变文章 item 的状态
+     */
+    private fun updateArticleStatusByLV(articleCollectInfoEvent: ArticleCollectInfoEvent) {
+        var position = 0
+        var articleInfoData: ArticleInfoData? = null
+        articleList.forEach {
+            if (it.id == articleCollectInfoEvent.articleId) {
+                articleInfoData = it
+                return@forEach
+            }
+        }
+
+        articleInfoData?.run {
+            if (collect == articleCollectInfoEvent.isCollect) {
+                DebugLog.d("zc_test", "此时已经更新了，不需要刷新")
+            } else {
+                position = articleList.indexOf(this)
+                collect = articleCollectInfoEvent.isCollect
+                DebugLog.d("zc_test", "此时 index is $position")
+                multiTypeAdapter.notifyItemChanged(position)
+            }
+        }
+
+    }
 
 }

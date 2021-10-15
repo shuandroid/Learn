@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.chendroid.learn.LearnApp
 
 /**
  * @author      : zhaochen
@@ -24,6 +25,11 @@ open class BaseFragment : Fragment() {
         ViewModelProvider(hostActivity)
     }
 
+    /** application 范围的 ViewModelProvider */
+    private val appViewModelProvider: ViewModelProvider by lazy {
+        ViewModelProvider(this.hostActivity.applicationContext as LearnApp)
+    }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -37,6 +43,10 @@ open class BaseFragment : Fragment() {
 
     protected fun <T : ViewModel> getActivityScopeViewModel(modelClass: Class<T>): T {
         return activityViewModelProvider.get(modelClass)
+    }
+
+    protected fun <T: ViewModel> getApplicationScopeViewModel(modelClass: Class<T>): T {
+        return appViewModelProvider.get(modelClass)
     }
 
 }
