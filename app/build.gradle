@@ -67,5 +67,8 @@ dependencies {
     implementation 'com.drakeet.multitype:multitype:4.3.0'
     // webView 封装库
     implementation 'com.github.Justson.AgentWeb:agentweb-core:v4.1.9-androidx'
+    // RxJava
+    implementation "io.reactivex.rxjava3:rxjava:3.1.2"
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 
 }

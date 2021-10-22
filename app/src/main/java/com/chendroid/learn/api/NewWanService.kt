@@ -59,6 +59,12 @@ interface NewWanService {
     ): Response<CollectArticleResponse>
 
     /**
+     * 获取收藏的文章列表
+     */
+    @GET("/lg/collect/list/{page}/json")
+    suspend fun getCollectArticleList(@Path("page") page: Int): Response<CollectResponse>
+
+    /**
      * 后去 Todo 列表
      * pageNum 页码，从 「1」开始
      * queryMap, 可添加 query 信息，

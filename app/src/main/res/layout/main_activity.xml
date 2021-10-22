@@ -28,19 +28,18 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_toolbar"
         app:tabIndicatorColor="@color/white"
+        app:tabIndicatorFullWidth="false"
         app:tabMode="scrollable"
         app:tabTextColor="@color/white" />
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/main_view_pager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_tab_layout">
-
-    </androidx.viewpager.widget.ViewPager>
+        app:layout_constraintTop_toBottomOf="@id/main_tab_layout" />
 
     <FrameLayout
         android:id="@+id/account_content_view"

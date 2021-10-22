@@ -10,7 +10,7 @@ import com.chendroid.learn.BuildConfig
  */
 object DebugLog {
 
-    private const val TAG = "DebugLog"
+    private const val TAG = "zc_test"
     private val DEBUG = BuildConfig.DEBUG
 
     /**
@@ -21,7 +21,6 @@ object DebugLog {
             Log.d(tag, msg)
         }
     }
-
 
 
 }

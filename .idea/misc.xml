@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/drawable/tag_selected_bg.xml" value="0.1515" />
         <entry key="app/src/main/res/layout/account_info_layout.xml" value="0.18262411347517732" />
         <entry key="app/src/main/res/layout/article_detail_layout.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/collect_item_layout.xml" value="0.11203703703703703" />
         <entry key="app/src/main/res/layout/fragment_article_list_layout.xml" value="0.15572916666666667" />
         <entry key="app/src/main/res/layout/layout_article_list_item.xml" value="0.335" />
         <entry key="app/src/main/res/layout/layout_home_toolbar.xml" value="0.20520833333333333" />

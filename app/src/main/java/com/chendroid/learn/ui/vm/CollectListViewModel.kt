@@ -7,51 +7,48 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chendroid.learn.api.ApiServiceHelper
-import com.chendroid.learn.bean.ArticleInfoData
+import com.chendroid.learn.bean.CollectArticleData
 import com.chendroid.learn.core.ResponseResult
-import com.chendroid.learn.ui.data.repo.ArticleListRepo
-import com.chendroid.learn.ui.data.source.ArticleListDataSource
+import com.chendroid.learn.ui.data.source.CollectListDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
  * @author      : zhaochen
- * @date        : 2021/8/26
- * @description : 文章列表 viewModel; fragment 内生效
+ * @date        : 2021/10/15
+ * @description : 我的收藏列表的 ViewModel
  */
-class ArticleListViewModel : ViewModel() {
+class CollectListViewModel : ViewModel() {
 
-
-    private val articleListRepo by lazy {
-        ArticleListRepo(ArticleListDataSource(ApiServiceHelper.newWanService))
+    private val collectListDataSource: CollectListDataSource by lazy {
+        CollectListDataSource(ApiServiceHelper.newWanService)
     }
 
+    private val _collectListLiveData = MutableLiveData<List<CollectArticleData>>()
+
+    val collectListLiveData: LiveData<List<CollectArticleData>>
+        get() = _collectListLiveData
+
     // 是否正在拉取数据，防止重复调用刷新
-    var isLoadingArticle = false
+    var isLoading = false
 
     // 目前检索的文章页数
     var curPage = 0
 
-    private val _articleListLiveData = MutableLiveData<List<ArticleInfoData>>()
-
-    val articleListLiveData: LiveData<List<ArticleInfoData>>
-        get() = _articleListLiveData
-
     /**
-     * 获取文章列表
+     * 获取收藏的文章列表
      */
-    fun getArticleList(isFirstPage: Boolean = true) {
+    fun getCollectList(isFirstPage: Boolean) {
         var tempPage = 0
         tempPage = if (isFirstPage) {
             0
         } else {
             curPage
         }
-        isLoadingArticle = true
+        isLoading = true
         viewModelScope.launch(Dispatchers.IO) {
-            val result = articleListRepo.getArticleList(tempPage)
-            Log.i("zc_test", "11111 current thread is ${Thread.currentThread()}")
+            val result = collectListDataSource.getCollectList(tempPage)
             if (result is ResponseResult.Success) {
                 curPage = result.data.curPage
                 result.data.datas?.run {
@@ -75,10 +72,9 @@ class ArticleListViewModel : ViewModel() {
      * 刷新文章列表
      */
     @UiThread
-    private fun emitUIArticleList(articleList: List<ArticleInfoData>) {
-        isLoadingArticle = false
-        _articleListLiveData.value = articleList
+    private fun emitUIArticleList(collectList: List<CollectArticleData>) {
+        isLoading = false
+        _collectListLiveData.value = collectList
     }
-
 
 }

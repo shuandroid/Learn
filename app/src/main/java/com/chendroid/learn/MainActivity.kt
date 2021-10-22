@@ -3,15 +3,16 @@ package com.chendroid.learn
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
 import com.chendroid.learn.core.BaseActivity
 import com.chendroid.learn.databinding.MainActivityBinding
-import com.chendroid.learn.ui.adapter.MainFragmentViewPagerAdapter
+import com.chendroid.learn.ui.adapter.FragmentViewAdapter2
 import com.chendroid.learn.ui.fragment.AccountFragment
 import com.chendroid.learn.ui.fragment.ArticleListFragment
+import com.chendroid.learn.ui.fragment.CollectListFragment
 import com.chendroid.learn.ui.main.MainFragment
 import com.chendroid.learn.util.DebugLog
 import com.chendroid.learn.widget.HomeToolbar
+import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
 
 class MainActivity : BaseActivity() {
@@ -29,47 +30,54 @@ class MainActivity : BaseActivity() {
             .init()
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        if (savedInstanceState == null) {
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.container, MainFragment.newInstance())
-//                .commitNow()
-//        }
-
-
         initView()
     }
 
     private fun initView() {
-        var tabTitleList = listOf<String>("首页", "更多")
+        var tabTitleList = listOf<String>("首页", "更多", "我的收藏")
         val firstHomeFragment = ArticleListFragment.newInstance()
         val moreTypeFragment = MainFragment()
-        var fragmentList = listOf<Fragment>(firstHomeFragment, moreTypeFragment)
-        binding.mainViewPager.adapter =
-            MainFragmentViewPagerAdapter(tabTitleList, fragmentList, supportFragmentManager)
-        binding.mainTabLayout.apply {
-            setupWithViewPager(binding.mainViewPager)
-            isTabIndicatorFullWidth = false
+        val collectListFragment = CollectListFragment.newInstance()
+        var fragmentList =
+            listOf<Fragment>(firstHomeFragment, moreTypeFragment, collectListFragment)
+        binding.mainViewPager.apply {
+            adapter = FragmentViewAdapter2(fragmentList, this@MainActivity)
         }
 
-        binding.mainViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        TabLayoutMediator(binding.mainTabLayout, binding.mainViewPager) { tab, position ->
+            tab.text = tabTitleList[position]
+        }.attach()
 
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-                DebugLog.d(msg = "mainViewPager onPageScrolled()")
-            }
+        //ViewPager 的实现
+//        binding.mainViewPager.adapter =
+//            MainFragmentViewPagerAdapter(tabTitleList, fragmentList, supportFragmentManager)
+//        binding.mainTabLayout.apply {
+//            setupWithViewPager(binding.mainViewPager)
+//            isTabIndicatorFullWidth = false
+//        }
 
-            override fun onPageSelected(position: Int) {
-                DebugLog.d(msg = "mainViewPager onPageSelected() position is $position")
-            }
+//        binding.mainViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+//
+//            override fun onPageScrolled(
+//                position: Int,
+//                positionOffset: Float,
+//                positionOffsetPixels: Int
+//            ) {
+//                DebugLog.d(msg = "mainViewPager onPageScrolled()")
+//            }
+//
+//            override fun onPageSelected(position: Int) {
+//                DebugLog.d(msg = "mainViewPager onPageSelected() position is $position")
+//            }
+//
+//            override fun onPageScrollStateChanged(state: Int) {
+//                DebugLog.d(msg = "mainViewPager onPageScrollStateChanged() state is $state")
+//
+//            }
+//        })
 
-            override fun onPageScrollStateChanged(state: Int) {
-                DebugLog.d(msg = "mainViewPager onPageScrollStateChanged() state is $state")
+//        binding.mainViewPager.scroll
 
-            }
-        })
 
         binding.homeToolbar.homeToolbarListener = object : HomeToolbar.HomeToolbarListener {
             override fun onAvatarViewClicked() {
