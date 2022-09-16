@@ -3,6 +3,7 @@ package com.chendroid.learn.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.KeyEvent
 import android.widget.LinearLayout
 import com.chendroid.learn.R
@@ -53,6 +54,7 @@ class ArticleDetailActivity : BaseActivity() {
                 putExtra(ARTICLE_TITLE_KEY, articleTitle)
                 putExtra(ARTICLE_URL_KEY, articleUrl)
                 putExtra(ARTICLE_COLLECT_KEY, collect)
+                putExtra("", Bundle())
             }
         }
 
@@ -94,6 +96,7 @@ class ArticleDetailActivity : BaseActivity() {
             setNavigationOnClickListener { finish() }
         }
 
+        Handler().post {  }
         binding.collectButton.apply {
             setImageResource(if (collect) R.drawable.ic_action_like else R.drawable.ic_action_no_like)
             setOnClickListener {

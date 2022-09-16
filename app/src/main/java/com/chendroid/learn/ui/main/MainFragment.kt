@@ -1,12 +1,14 @@
 package com.chendroid.learn.ui.main
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.chendroid.learn.R
+import com.chendroid.learn.widget.TestView
+import com.facebook.stetho.common.LogUtil
 
 class MainFragment : Fragment() {
 
@@ -27,6 +29,23 @@ class MainFragment : Fragment() {
     super.onActivityCreated(savedInstanceState)
     viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
     // TODO: Use the ViewModel
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    initView(view)
+  }
+
+  private fun initView(view: View) {
+
+    LogUtil.d("zc_test", "initView()")
+    val testView = view.findViewById<TestView>(R.id.testView)
+
+    testView.post{
+      LogUtil.d("zc_test", "这里获取到宽和高： ${testView.width}, height is ${testView.height}")
+    }
+
   }
 
 }

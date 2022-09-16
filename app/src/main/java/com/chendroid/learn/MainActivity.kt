@@ -93,7 +93,6 @@ class MainActivity : BaseActivity() {
             .add(R.id.account_content_view, accountFragment).commitNow()
     }
 
-
     override fun onBackPressed() {
         if (binding.accountContentView.visibility == View.VISIBLE) {
             binding.accountContentView.visibility = View.INVISIBLE

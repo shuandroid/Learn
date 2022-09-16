@@ -92,6 +92,8 @@ class ArticleListFragment : BaseFragment(), ArticleItemViewDelegate.ArticleItemC
         initHomeSwipeRefresh()
         initRecyclerView()
 
+
+
         bindViewModel()
         refreshData()
     }
@@ -122,6 +124,11 @@ class ArticleListFragment : BaseFragment(), ArticleItemViewDelegate.ArticleItemC
                 this@ArticleListFragment.onScrolled(recyclerView, dx, dy)
             }
         })
+
+        binding.testView.post {
+            DebugLog.d("zc_test", "这里获取到宽和高 parent view ： ${binding.testLayout.width}, height is ${binding.testLayout.height}")
+            DebugLog.d("zc_test", "这里获取到宽和高： ${binding.testView.width}, height is ${binding.testView.height}")
+        }
     }
 
     private fun bindViewModel() {
